@@ -1,0 +1,21 @@
+{
+  "_comment": "Референс порогов шкал боли (паттерн tokens.json-verify). Источники: WSAVA Guidance for use of the CMPS-SF (wsava.org, 6/24 или 5/20); Reid et al. 2007 (Animal Welfare/UFAW — структура 6 категорий: 4+5+5+6+5+5 дескрипторов); Evangelista et al. 2019 Sci Rep 9:19127 (FGS: 5 юнитов, 0-2); WSAVA Acute Pain Scales Cats (≥4/10); ISFM Consensus Guidelines 2022 (ратио ≥0.4/1.0). Дрейф чисел в painscales.js = красный CI.",
+  "cmps": {
+    "scaleId": "cmps-sf",
+    "categories": ["vocalisation", "attention", "mobility", "touch", "demeanour", "posture"],
+    "itemCounts": [4, 5, 5, 6, 5, 5],
+    "omittable": ["mobility"],
+    "maxFull": 24,
+    "maxNoMobility": 20,
+    "interventionFull": 6,
+    "interventionNoMobility": 5
+  },
+  "fgs": {
+    "scaleId": "fgs",
+    "units": ["ears", "eyes", "muzzle", "whiskers", "head"],
+    "unitItemCount": 3,
+    "max": 10,
+    "cutOff": 4,
+    "ratioCutOff": 0.4
+  }
+}

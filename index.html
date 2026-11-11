@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Шкалы боли — CMPS-SF (Глазго) и кошачья гримас-шкала FGS</title>
+<meta name="description" content="Интерактивные шкалы острой боли: CMPS-SF Глазго для собак (порог вмешательства 6/24 или 5/20) и гримас-шкала FGS для кошек (порог ≥4/10). Живой балл, инструкция по частоте оценки, честные ограничения. Считает в браузере — данные не покидают устройство.">
+<meta property="og:title" content="Шкалы боли — CMPS-SF и FGS">
+<meta property="og:description" content="Краткая форма Глазго (собаки): 6 категорий, порог анальгезии 6/24. Гримас-шкала FGS (кошки): 5 юнитов мимики, порог ≥4/10 с ратио-нормализацией.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shray77.github.io/vetpain-site/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://shray77.github.io/vetpain-site/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='8' y='8' width='84' height='84' rx='22' fill='%239E2B52'/><path d='M18 52h18l6-16 10 32 8-24 6 8h16' fill='none' stroke='%23FDF3F7' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="stylesheet" href="./vet-ds.css">
+<link rel="stylesheet" href="./fonts.css">
+<script>(function(){try{if(localStorage.getItem("vetds-theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}})();</script>
+<style>
+  /* Ядро — vet-ds v2.5.2 (копия из репо экосистемы, синкер sync.py) +
+     вендоренные шрифты (./fonts.css, канон экосистемы: без CDN).
+     Ниже — характер витрины «Шкалы боли»: малиновый голос (тёплая
+     а аналитическая малина — цвет боли и внимательности к ней) + локальные
+     алиасы: вёрстка читает токены ДС, значения не дублируются. */
+  :root {
+    --ds-accent: #9E2B52; --ds-accent-strong: #7E2140; --ds-accent-ink: #FDF3F7;
+    --bg: var(--ds-bg); --surface: var(--ds-surface); --surface2: var(--ds-surface2);
+    --border: var(--ds-border); --text: var(--ds-text); --muted: var(--ds-muted);
+    --faint: var(--ds-faint); --accent: var(--ds-accent);
+    --red: var(--ds-red); --orange: var(--ds-orange); --amber: var(--ds-amber);
+    --green: var(--ds-green); --blue: var(--ds-blue); --violet: var(--ds-violet);
+    --mono: var(--ds-font-mono);
+    --accent-dim: color-mix(in srgb, var(--accent) 10%, transparent);
+    --accent-line: color-mix(in srgb, var(--accent) 38%, transparent);
+  }
+  [data-theme="dark"] { --ds-accent: #F2A7C3; --ds-accent-strong: #F7C1D6; --ds-accent-ink: #2A1017; }
+  [data-theme="form"] { --ds-accent: #9E2B52; --ds-accent-strong: #7E2140; --ds-accent-ink: #FDF3F7; }
+  section.ps[data-theme="form"] {
+    --bg: var(--ds-bg); --surface: var(--ds-surface); --surface2: var(--ds-surface2);
+    --border: var(--ds-border); --text: var(--ds-text); --muted: var(--ds-muted); --faint: var(--ds-faint);
+    --accent: var(--ds-accent); --red: var(--ds-red); --orange: var(--ds-orange); --amber: var(--ds-amber);
+    --green: var(--ds-green); --blue: var(--ds-blue); --violet: var(--ds-violet);
+  }
+  * { box-sizing: border-box; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 var(--ds-font-sans); margin: 0; }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+  .ds-masthead-meta { margin-bottom: 12px; }
+  .ds-hub { max-width: 980px; margin: 0 auto; padding: 12px 20px 0; }
+  .ds-rule-double { max-width: 980px; margin: 0 auto; }
+  .ds-footer--meta .wrap { display: flex; flex-direction: column; gap: var(--ds-space-2); }
+  .ds-footer--meta .legal { color: var(--orange); }
+
+  section.ps { margin: 26px 0 10px; }
+  [data-theme="dark"] section.ps[data-theme="form"] {
+    border: 1px solid #857F6E;            /* сепия-тушь формуляра (v2.3.3) */
+    border-radius: var(--ds-radius);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.3);
+    padding: 18px 20px 20px;
+  }
+  section.ps > h2, article.doc h2 { font-family: var(--ds-font-display); font-weight: 400; font-size: 24px; margin: 0 0 4px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 13.5px; margin: 0 0 14px; }
+
+  /* табы видов */
+  .ps-tabs { margin: 18px 0 0; }
+  .ps-hint { font: 11.5px var(--mono); color: var(--faint); }
+
+  /* опросник */
+  .ps-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  fieldset.ps-cat {
+    border: 1px solid var(--border); border-radius: var(--ds-radius);
+    padding: 12px 14px 10px; margin: 0; background: var(--surface);
+  }
+  fieldset.ps-cat[disabled] { opacity: .55; }
+  fieldset.ps-cat legend { font: 600 12.5px var(--ds-font-sans); color: var(--text); padding: 0 6px; }
+  fieldset.ps-cat legend .sec { font: 500 10.5px var(--mono); color: var(--faint); margin-right: 6px; }
+  .ps-ask { margin: 0 0 8px; font-size: 14px; color: var(--muted); }
+  .ps-opts { display: grid; gap: 6px; }
+  label.opt {
+    display: flex; align-items: baseline; gap: 8px; padding: 6px 10px;
+    border: 1px solid var(--border); border-radius: 8px; background: var(--bg);
+    font-size: 14.5px; color: var(--muted); cursor: pointer;
+  }
+  label.opt input { accent-color: var(--accent); flex: none; transform: translateY(1px); }
+  label.opt:has(input:checked) { color: var(--text); border-color: var(--accent-line); background: var(--accent-dim); }
+  label.opt .b { font: 600 12px var(--mono); color: var(--faint); flex: none; margin-left: auto; }
+  label.opt:has(input:checked) .b { color: var(--accent); }
+  label.opt.na { border-style: dashed; }
+  .ps-cat .ps-hint { display: block; margin-top: 8px; }
+
+  .ps-omit {
+    display: flex; gap: 8px; align-items: baseline; padding: 10px 12px;
+    border: 1px dashed var(--amber); border-radius: var(--ds-radius);
+    background: color-mix(in srgb, var(--ds-amber) 7%, transparent);
+    font-size: 13.5px; color: var(--muted); cursor: pointer;
+  }
+  .ps-omit input { accent-color: var(--amber); flex: none; transform: translateY(2px); }
+  .ps-omit .ps-omit-t { white-space: nowrap; }
+
+  /* результат */
+  .ps-res { border: 1px solid var(--border); border-radius: var(--ds-radius); background: var(--surface); padding: 14px 16px; }
+  .ps-res[hidden] { display: none; }
+  .ps-res .verdict { font: 600 15px var(--ds-font-sans); margin: 0 0 8px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .pill { font: 500 12px var(--mono); border-radius: 999px; padding: 3px 10px; }
+  .pill-ok { background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 45%, transparent); }
+  .pill-warn { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); border: 1px solid color-mix(in srgb, var(--red) 45%, transparent); }
+  .pill-idle { background: color-mix(in srgb, var(--muted) 12%, transparent); color: var(--muted); border: 1px solid var(--border); }
+  .ps-meter { position: relative; height: 10px; border-radius: 999px; background: var(--surface2); margin: 10px 0 4px; overflow: hidden; }
+  .ps-meter i { position: absolute; inset: 0 auto 0 0; background: var(--accent-line); border-radius: 999px; }
+  .ps-meter b { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--red); }
+  .ps-stats { display: flex; gap: 18px; flex-wrap: wrap; font: 12px var(--mono); color: var(--faint); margin: 8px 0 4px; }
+  .ps-stats b { color: var(--text); font-weight: 600; }
+  .ps-do { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+  .ps-do li { margin: 3px 0; }
+  .ps-warn { margin: 10px 0 0; font-size: 13.5px; color: var(--amber); border-top: 1px dashed var(--border); padding-top: 8px; }
+  .ps-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+  /* методология */
+  article.doc .fx-formula {
+    font: 500 15px/1.5 var(--mono); background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--ds-radius); padding: 10px 14px; margin: 10px 0;
+  }
+  .tbl-scroll { overflow-x: auto; margin: 12px 0; }
+  table.spec { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  table.spec th { font: 600 12px var(--ds-font-sans); text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--border); }
+  table.spec td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.spec td.num { font-family: var(--mono); white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .ds-hub a { padding-block: 10px; }
+    fieldset.ps-cat { padding: 10px 10px 8px; }
+    label.opt { font-size: 13.5px; }
+    footer { margin-top: 8px; padding: 6px 0 0; }
+    .ds-footer--meta .wrap span:not(.legal) { display: none; }
+    footer .legal { font-size: 9.5px; }
+  }
+
+  @media print {
+    .ds-hub, .ps-tabs, .ds-masthead__side, .ps-actions, .theme-pill, .ps-hint, .ds-footer--meta .wrap span:not(.legal) { display: none !important; }
+    body { font-size: 12px; }
+    section.ps[data-theme="form"] { box-shadow: none; border: 1px solid #857F6E; }
+    section.ps:not(.printable) { display: none; }
+    .ps-res { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<nav class="ds-hub">
+  <a href="https://shray77.github.io/vetpredis-site/">Атлас предрасположенностей</a>
+  <a href="https://shray77.github.io/biobarrier-site/">БиоБарьер</a>
+  <a href="https://shray77.github.io/vetdigest-site/">Дайджест науки</a>
+  <a href="https://shray77.github.io/vetrecall-site/">Отзывы и вспышки РФ</a>
+  <a href="https://shray77.github.io/biothreat-site/">Биоугрозы мира</a>
+  <a href="https://shray77.github.io/vet-heatmap/">ВетКарта</a>
+  <a href="https://shray77.github.io/vetflu-site/">Окна риска ВПГП</a>
+  <a href="https://shray77.github.io/vet-meteo/">ВетМетео</a>
+  <a href="https://shray77.github.io/rss-core-site/">Статус ядра</a>
+  <a href="https://shray77.github.io/vetfecrt-site/">ФЭКРТ</a>
+  <a href="https://shray77.github.io/vetpain-site/" class="on" aria-current="page">Шкалы боли</a>
+  <a href="https://shray77.github.io/vettools/">ВетТулс</a>
+  <a href="https://shray77.github.io/vet-hub/">ВетХаб</a>
+</nav>
+<script>/* Task 195: активная пилюля — в кадре (хаб на телефоне одним рядом) */
+(function(){var a=document.querySelector('.ds-hub a.on');if(a)a.scrollIntoView({block:'nearest',inline:'center'});})();</script>
+
+<header class="ds-masthead">
+  <div class="wrap">
+    <div class="ds-masthead-meta"><span>vetpain · шкалы острой боли</span><span class="m-date">...</span></div>
+  </div>
+  <div class="wrap ds-masthead__row">
+    <div class="ds-masthead__brand">
+      <div class="ds-masthead__logo"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-6 4 13 2.5-8 1.5 3H21"/></svg></div>
+      <div>
+        <h1 class="ds-masthead__title">Шкалы боли: Глазго CMPS-SF и кошачья FGS</h1>
+        <p class="ds-masthead__sub">Две валидированные шкалы острой боли — краткая композитная форма Глазго для собак и гримас-шкала для кошек. Живой балл, порог анальгезии, честные ограничения метода. Считает в браузере — данные не покидают компьютер.</p>
+      </div>
+    </div>
+    <div class="ds-masthead__side">
+      <div class="live" id="meta"><span class="dot ok"></span><span>офлайн · без отправки данных</span></div>
+      <button class="ds-btn ds-btn--sm ds-theme-toggle ds-theme-toggle--labeled theme-pill" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">
+        <svg class="ds-theme-toggle__sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg>
+        <svg class="ds-theme-toggle__moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <span class="ds-theme-toggle__label" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="ds-rule-double"></div>
+
+<main class="wrap">
+
+  <div class="ds-tabs ps-tabs" role="tablist" aria-label="Вид пациента">
+    <button class="ds-tab on" id="tabDog" role="tab" aria-selected="true" aria-controls="paneDog" type="button">Собаки · CMPS-SF</button>
+    <button class="ds-tab" id="tabCat" role="tab" aria-selected="false" aria-controls="paneCat" type="button">Кошки · FGS</button>
+  </div>
+
+  <!-- ======================= СОБАКИ: CMPS-SF (голос B «Формуляр») ========= -->
+  <section class="ps printable" id="paneDog" data-theme="form" role="tabpanel" aria-labelledby="tabDog">
+    <h2>CMPS-SF — краткая форма Глазго (собаки)</h2>
+    <p class="sub">Шесть категорий поведения, по одной отметке в каждой; балл считается живо. Порог вмешательства&nbsp;— <b>6/24</b>, а без секции мобильности&nbsp;— <b>5/20</b>. Шкала — помощник клинического суждения, а не его замена.</p>
+
+    <div class="ps-form" id="dogForm">
+      <label class="ps-omit" for="omitMobility"><input type="checkbox" id="omitMobility"><span class="ps-omit-t">секция B не проводится —</span> <span>перелом позвоночника, таза или нескольких конечностей, либо передвижение требует помощи; итог считается из <b>20</b>, порог <b>5</b></span></label>
+      <div id="dogCats"></div>
+      <div class="ps-res" id="dogRes" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ======================= КОШКИ: FGS (голос B «Формуляр») ============== -->
+  <section class="ps printable" id="paneCat" data-theme="form" role="tabpanel" aria-labelledby="tabCat" hidden>
+    <h2>FGS — гримас-шкала (кошки)</h2>
+    <p class="sub">Пять юнитов мимики, каждый 0/1/2. Если юнит оценить нельзя — так и отметьте: итог нормализуется по оценённым (ISFM-2022). Порог спасительной анальгезии&nbsp;— <b>≥4/10</b>. Оценивайте спокойную кошку до манипуляций: страх и седация искажают мимику.</p>
+
+    <div class="ps-form" id="catForm">
+      <div id="catUnits"></div>
+      <div class="ps-res" id="catRes" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ======================= МЕТОДОЛОГИЯ (голос A «Периодика») =========== -->
+  <section class="ps" id="method">
+    <h2>Методология и пороги</h2>
+    <details class="fx-method">
+      <summary>подробнее: откуда шкалы, как считаются и не считаются — история, пороги, честные ограничения, источники</summary>
+
+      <article class="doc">
+      <p class="ds-lede"><span class="ds-dropcap">Б</span>оль у животных не измеряется прибором — её считывают с поведения и мимики по валидированным шкалам. Здесь две из них, обе прошли психометрическую разработку и проверку согласия оценщиков: краткая композитная шкала Глазго для собак<span class="ds-fn" title="Holton et al. 2001; краткая форма — Reid et al. 2007">1</span> и кошачья гримас-шкала<span class="ds-fn" title="Evangelista et al. 2019, Sci Rep">7</span>.</p>
+
+      <h2>CMPS-SF: как устроена</h2>
+      <p>Полная шкала Глазго (CMPS) выросла из наблюдений за собаками после овариогистерэктомии; краткая форма (SF) сократила опрос до ~2 минут: <b>шесть категорий, 30 дескрипторов</b>, в каждой категории дескрипторы ранжированы по нарастанию боли, балл дескриптора — его ранг от нуля.<span class="ds-fn" title="Reid et al. 2007 — разработка CMPS-SF и вывод порога вмешательства">2</span> Секции A (вокализация, внимание к ране) — спонтанное поведение, смотрим издали; секция B (мобильность) — интерактивная; секция C (реакция на пальпацию) — единственная шестидескрипторная, до 5 баллов; секция D (состояние и поза) — общее впечатление, ставится последним.</p>
+      <div class="fx-formula">балл = Σ рангов выбранных дескрипторов &nbsp;·&nbsp; максимум 24<br>без мобильности: максимум 20, порог 5 вместо 6</div>
+      <p>Если движение противопоказано (переломы позвоночника, таза, нескольких конечностей), секцию B пропускают — сумма считается из 20, а порог вмешательства снижается до 5: так сделано в бланке, и так делает эта витрина.<span class="ds-fn" title="WSAVA Guidance for use of the CMPS-SF">3</span></p>
+
+      <h2>Порог вмешательства и протокол оценки</h2>
+      <p>Рекомендованный уровень анальгетического вмешательства — <b>6/24 или 5/20</b>. Достигли порога — анальгезия, пересмотр через ~1 час; ниже — мониторинг каждые 3–4 часа (и раньше, если процедура тяжёлая); в раннем послеоперационном периоде не чаще раза в час, чтобы не трясти пациента зря. Шкала валидирована для острой боли — хирургической, травматической, воспалительной; оценивайте только пришедшую в сознание и способную передвигаться без помощи собаку (обычно не раньше ~2 часов после экстубации).<span class="ds-fn" title="WSAVA Guidance + протокол клинического применения (Royal Canin Academy, 2021)">3,4</span></p>
+      <div class="tbl-scroll">
+      <table class="spec">
+        <thead><tr><th>Шкала</th><th>Вид</th><th>Структура</th><th>Максимум</th><th>Порог вмешательства</th><th>Источник</th></tr></thead>
+        <tbody>
+          <tr><td><b>CMPS-SF</b></td><td>собаки, острая боль</td><td>6 категорий · 30 дескрипторов · ранги</td><td class="num"><em>24</em> (20 без B)</td><td class="num"><em>≥6/24 · ≥5/20</em></td><td>WSAVA<sup>3</sup>, Reid et&nbsp;al. 2007<sup>2</sup></td></tr>
+          <tr><td><b>FGS</b></td><td>кошки, острая боль</td><td>5 юнитов мимики · 0–2 каждый</td><td class="num"><em>10</em></td><td class="num"><em>≥4/10 · ратио ≥0.4</em></td><td>WSAVA<sup>5</sup>, ISFM-2022<sup>8</sup></td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <h2>FGS: мимика вместо опроса</h2>
+      <p>Гримас-шкала читает боль с лица кошки: пять юнитов — уши, глазная щель, морда, вибриссы, положение головы — по 0/1/2.<span class="ds-fn" title="Evangelista et al. 2019, Sci Rep 9:19127">7</span> Юнит, который не виден (например, морда в елизаветинском воротнике), не оценивается: балл нормализуется — сумма делится на число оценённых юнитов, порог — <b>≥0.4 из 1.0</b> (при всех пяти оценённых это то же, что ≥4/10).<span class="ds-fn" title="ISFM Consensus Guidelines 2022, Steagall et al.">8</span> Шкала обучаема: тренировка на фотографиях заметно выравнивает оценщиков, и пользоваться ею могут не только ветеринары, но и медсёстры, студенты и владельцы — включая домашние условия.<span class="ds-fn" title="ISFM-2022; согласие оценщиков — Reidy/Brumm? см. источники">8</span> Официальный тренажёр с фотографиями — felinegrimacescale.com<span class="ds-fn" title="сайт авторов шкалы">9</span>; фотографиями мы не пользуемся — лицензия авторов.</p>
+      <p>Честные искажения: <b>седация</b> и <b>страх</b> меняют мимику — оценивайте спокойную кошку до манипуляций; при недавней анестезии дождитесь восстановления. Морда «каменное лицо» при стрессе может выглядеть напряжённой — сомневаетесь, оценивайте повторно после того, как кошка освоится.</p>
+
+      <h2>Честные ограничения (читать до использования)</h2>
+      <p><b>CMPS-SF — порядковая шкала.</b> Замена расчётных весов на ранги упростила бланк, но снизила точность измерения — авторы это оговорили при выпуске: шкала для клинических решений, а не для тонких исследований.<span class="ds-fn" title="Reid et al. 2007, обзор ограничения в Testa 2021">2,6</span></p>
+      <p><b>Порог 6/24 — не константа природы.</b> В обзор хирургических исследований балл вмешательства меняли примерно в трети работ (вплоть до 10–18/24) — там, где ниже терпимость к боли или выше цена недолеченной боли.<span class="ds-fn" title="Testa et al. 2021, Frontiers Vet Sci">6</span> Клинический смысл порога — «пора обсудить анальгезию», решение всегда за врачом.</p>
+      <p><b>Согласие оценщиков тренируется.</b> Межгрупповое согласие по CMPS-SF хорошее, внутри группы — от слабого до умеренного; необученные оценщики (например, студенты) склонны завышать боль.<span class="ds-fn" title="Согласие оценщиков CMPS-SF, Ливерпуль 2024 (PMC11350858)">10</span> Portuguese-валидация 2024 по COSMIN/GRADE подтвердила надёжность внутри и между наблюдателями.<span class="ds-fn" title="de Lima et al. 2024, Animals 14(6):831">11</span></p>
+      <p><b>Обе шкалы — об острой боли.</b> Хроническую боль они не валидированы измерять; для неё — свои инструменты (например, шкалы качества жизни).</p>
+      <p><b>Это не диагноз и не назначение.</b> Балл — индикатор обсуждения анальгезии. Препарат, дозу и путь выбирает врач; ни одно животное не должно остаться без анальгезии из-за «маленького» балла.</p>
+
+      <h2>Лицензии и принадлежность</h2>
+      <p>Шкалы принадлежат их разработчикам: CMPS-SF — Университету Глазго (бланк публикуется профессиональными ассоциациями с разрешения правообладателя<span class="ds-fn" title="надпись на бланке: Reproduced with permission from Jacqueline Reid, University of Glasgow">2</span>), FGS — авторам Evangelista, Watanabe, Leung, Monteiro, O'Toole, Pang, Steagall.<span class="ds-fn" title="Evangelista et al. 2019">7</span> Эта витрина — некоммерческая образовательная реализация структур шкал (текстовые дескрипторы и арифметика порогов), с прямыми ссылками на первоисточники; изображения и бланки оригиналов не воспроизводятся.</p>
+
+      <h2>Источники</h2>
+      <p class="ds-fnotes">1 Holton E., Scott E.M., Nolan A.M., Reid J., Welsh E. Development of a behaviour-based scale to measure acute pain in dogs. Vet Rec 2001; 148: 525–531.<br>2 Reid J., Scott E.M., Calvo G., Nolan A.M. Review of pain assessment scales and development of the CMPS-SF; разработка краткой формы, ранги и порог вмешательства (Animal Welfare / UFAW 2007; бланк «Reproduced with permission from Jacqueline Reid, University of Glasgow» — воспроизведение в валидационных публикациях).<br>3 WSAVA. Guidance for use of the CMPS-SF — <a href="https://wsava.org/wp-content/uploads/2020/01/Canine-CMPS-SF.pdf">wsava.org (PDF)</a>: порог 6/24 или 5/20, протокол частоты оценки.<br>4 Royal Canin Academy. Pain assessment in the dog: the Glasgow Pain Scale (2021) — <a href="https://academy.royalcanin.com/en/veterinary/pain-assessment-in-the-dog-the-glasgow-pain-scale">обзор протокола клинического применения</a>.<br>5 WSAVA. Acute pain scales for cats — <a href="https://wsava.org/wp-content/uploads/2021/02/Acute-Pain-Scales_Cats.pdf">wsava.org (PDF)</a>: максимум FGS 10, порог ≥4/10.<br>6 Testa B. et al. The Short Form of the Glasgow Composite Measure Pain Scale: обзор применения в клинических испытаниях. Front Vet Sci 2021 — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8515184/">PMC8515184</a>: ~1/3 исследований меняют порог вмешательства.<br>7 Evangelista M.C., Watanabe R., Leung V.S.Y., Monteiro B., O'Toole E., Pang D.S.J., Steagall P.V. Facial expressions of pain in cats: the development and validation of a Feline Grimace Scale. Sci Rep 2019; 9: 19127 — <a href="https://pubmed.ncbi.nlm.nih.gov/31836868/">PubMed 31836868</a>; дескрипторы — тренировочное руководство (супплементарий).<br>8 Steagall P.V. et al. 2022 ISFM Consensus Guidelines on the Management of Acute Pain in Cats. J Feline Med Surg 2022 — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10845386/">PMC10845386</a>: ратио-нормализация ≥0.4/1.0, обучение оценщиков, домашнее использование.<br>9 Feline Grimace Scale — официальный тренажёр авторов: <a href="https://www.felinegrimacescale.com/">felinegrimacescale.com</a>.<br>10 Согласие оценщиков CMPS-SF между и внутри групп (студенты завышают) — Liverpool 2024: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11350858/">PMC11350858</a>.<br>11 de Lima M.T. et al. Validation of the Portuguese Version of the Short-Form Glasgow CMPS-SF (COSMIN/GRADE). Animals 2024; 14(6): 831 — <a href="https://www.mdpi.com/2076-2615/14/6/831">MDPI</a>: надёжность и валидность.</p>
+      </article>
+    </details>
+  </section>
+</main>
+
+<footer class="ds-footer ds-footer--meta">
+  <div class="wrap">
+    <span class="legal">обучающий инструмент · не ставит диагноз и не назначает лечение · решение об анальгезии — всегда за ветеринарным врачом · <a href="./terms.html">условия и дисклеймер</a></span>
+    <span>v1.0 · CMPS-SF: 6/24 и 5/20 (WSAVA) · FGS: ≥4/10, ратио ≥0.4 (ISFM-2022) · арифметика гейтится известными ответами (node --test)</span>
+    <span>источники: <a href="https://wsava.org/global-guidelines/pain-guidelines">WSAVA Pain Guidelines</a> · <a href="https://www.felinegrimacescale.com/">felinegrimacescale.com</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10845386/">ISFM-2022</a> · ядро — <a href="https://github.com/shray77/vet-ds">vet-ds</a> · <a href="https://github.com/shray77/vetpain-site">репозиторий</a></span>
+  </div>
+</footer>
+
+<script src="./painscales.js"></script>
+<script>
+(function () {
+  'use strict';
+  var P = window.PainScales;
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---- тема (канон vetflu: span остаётся пустым, текст — только ::after) --- */
+  var toggle = $('themeToggle');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var root = document.documentElement;
+      var dark = root.getAttribute('data-theme') === 'dark';
+      root.setAttribute('data-theme', dark ? 'light' : 'dark');
+      try { localStorage.setItem('vetds-theme', dark ? 'light' : 'dark'); } catch (e) {}
+    });
+  }
+
+  /* ---- дата выпуска в мета-строке ---------------------------------------- */
+  (function () {
+    var m = document.querySelector('.m-date');
+    if (m) m.textContent = 'масштаб боли · 11.11.2026';
+  })();
+
+  /* ---- табы видов ---------------------------------------------------------- */
+  var tabDog = $('tabDog'), tabCat = $('tabCat');
+  var paneDog = $('paneDog'), paneCat = $('paneCat');
+  function showTab(which) {
+    var dog = which === 'dog';
+    tabDog.classList.toggle('on', dog); tabDog.setAttribute('aria-selected', dog ? 'true' : 'false');
+    tabCat.classList.toggle('on', !dog); tabCat.setAttribute('aria-selected', dog ? 'false' : 'true');
+    paneDog.hidden = !dog; paneCat.hidden = dog;
+    paneDog.classList.toggle('printable', dog); paneCat.classList.toggle('printable', !dog);
+    try {
+      var u = new URL(location.href);
+      if (u.searchParams.get('scale') === 'cat' || u.hash === '#cat') history.replaceState(null, '', dog ? u.pathname : u.pathname + '?scale=cat');
+    } catch (e) {}
+  }
+  tabDog.addEventListener('click', function () { showTab('dog'); });
+  tabCat.addEventListener('click', function () { showTab('cat'); });
+
+  /* ---- сборка собачьего опросника из данных ядра -------------------------- */
+  var dogAnswers = {};      /* key → rank | null (mobility) */
+  var omitBox = $('omitMobility');
+
+  (function buildDog() {
+    var host = $('dogCats');
+    var html = '';
+    P.CMPS_SF.categories.forEach(function (c) {
+      html += '<fieldset class="ps-cat" id="fs-' + c.key + '"' + (c.key === 'mobility' ? ' data-omittable="1"' : '') + '>';
+      html += '<legend><span class="sec">' + c.section + '</span>' + esc(c.title) + '</legend>';
+      html += '<p class="ps-ask">' + esc(c.ask) + '</p>';
+      html += '<div class="ps-opts" role="radiogroup" aria-label="' + esc(c.title) + '">';
+      c.items.forEach(function (it) {
+        var id = 'r-' + c.key + '-' + it.score;
+        html += '<label class="opt" for="' + id + '"><input type="radio" id="' + id + '" name="' + c.key + '" value="' + it.score + '"><span>' + esc(it.text) + '</span><span class="b">' + it.score + '</span></label>';
+      });
+      html += '</div>';
+      if (c.hint) html += '<span class="ps-hint">' + esc(c.hint) + '</span>';
+      html += '</fieldset>';
+    });
+    host.innerHTML = html;
+
+    P.CMPS_SF.categories.forEach(function (c) {
+      dogAnswers[c.key] = undefined;      /* ничего не выбрано */
+    });
+
+    host.addEventListener('change', function (e) {
+      var name = e.target && e.target.name;
+      if (!name) return;
+      dogAnswers[name] = parseInt(e.target.value, 10);
+      recomputeDog();
+    });
+
+    omitBox.addEventListener('change', function () {
+      var fs = $('fs-mobility');
+      fs.disabled = omitBox.checked;
+      if (omitBox.checked) {
+        dogAnswers.mobility = null;
+        var sel = fs.querySelector('input:checked');
+        if (sel) sel.checked = false;
+      } else {
+        dogAnswers.mobility = undefined;
+      }
+      recomputeDog();
+    });
+  })();
+
+  function recomputeDog() {
+    var out = $('dogRes');
+    var r = P.cmpsScore(dogAnswers);
+    if (!r.ok) {
+      out.innerHTML = '<p class="verdict"><span class="pill pill-idle">опрос не заполнен</span></p>'
+        + '<p class="ps-ask">Отметьте по одному дескриптору в категориях: ' + r.missing.join(', ') + '. До этого балл не считается.</p>';
+      return;
+    }
+    var iv = r.verdict.code === 'intervene';
+    var h = '';
+    h += '<p class="verdict"><span>' + r.total + '/' + r.denom + '</span>'
+       + '<span class="pill ' + (iv ? 'pill-warn' : 'pill-ok') + '">' + esc(r.verdict.label) + '</span>'
+       + '<span class="ps-hint">порог вмешательства: ' + r.threshold + '/' + r.denom + '</span></p>';
+    var pct = Math.round(100 * r.total / r.denom);
+    var thrPct = Math.round(100 * r.threshold / r.denom);
+    h += '<div class="ps-meter"><i style="width:' + pct + '%"></i><b style="left:' + thrPct + '%"></b></div>';
+    h += '<div class="ps-stats">'
+       + '<span>балл <b>' + r.total + '/' + r.denom + '</b></span>'
+       + (r.mobilityOmitted ? '<span>секция B пропущена — итог из 20</span>' : '<span>секция B учтена — итог из 24</span>')
+       + '</div>';
+    if (iv) {
+      h += '<ul class="ps-do">'
+         + '<li><b>анальгезия показана</b> — балл достиг порога вмешательства (' + r.threshold + '/' + r.denom + ');</li>'
+         + '<li>дать препарат, пересмотреть через ~1 час: снизился — мониторить каждые 3–4 часа, не снизился — обсудить дополнительную анальгезию;</li>'
+         + '</ul>';
+    } else {
+      h += '<ul class="ps-do">'
+         + '<li>балл ниже порога вмешательства — анальгезия по баллу не показана;</li>'
+         + '<li>мониторинг каждые 3–4 часа (ранний послеоперационный период — не чаще раза в час);</li>'
+         + '</ul>';
+    }
+    h += '<p class="ps-warn">Шкала — помощник клинического суждения, не его замена: пациента лечат, а не балл. При сомнении — лечить от боли.</p>';
+    h += '<div class="ps-actions">'
+       + '<button class="ds-btn ds-btn--primary" id="dogCopy" type="button">копировать отчёт</button>'
+       + '<button class="ds-btn" id="dogPrint" type="button">печать бланка</button>'
+       + '<button class="ds-btn" id="dogReset" type="button">сброс</button>'
+       + '</div>';
+    out.innerHTML = h;
+    $('dogCopy').addEventListener('click', function () { copyReport(reportDog(r), 'отчёт скопирован'); });
+    $('dogPrint').addEventListener('click', function () { window.print(); });
+    $('dogReset').addEventListener('click', function () {
+      P.CMPS_SF.categories.forEach(function (c) { dogAnswers[c.key] = undefined; });
+      document.querySelectorAll('#dogCats input:checked').forEach(function (i) { i.checked = false; });
+      omitBox.checked = false; $('fs-mobility').disabled = false;
+      recomputeDog();
+    });
+  }
+
+  function reportDog(r) {
+    var lines = [];
+    lines.push('CMPS-SF (Глазго, собаки) — балл ' + r.total + '/' + r.denom
+      + ' · порог ' + r.threshold + '/' + r.denom);
+    lines.push('Вердикт: ' + r.verdict.label.toUpperCase()
+      + (r.verdict.code === 'intervene' ? ' — анальгезия показана' : ' — анальгезия по баллу не показана'));
+    if (r.mobilityOmitted) lines.push('Секция B (мобильность) не проводилась — итог из 20');
+    P.CMPS_SF.categories.forEach(function (c) {
+      if (c.key === 'mobility' && r.mobilityOmitted) return;
+      var v = dogAnswers[c.key];
+      var it = v === undefined ? null : c.items[Math.max(0, Math.min(c.items.length - 1, v))];
+      lines.push('  ' + c.title + ': ' + (it ? it.text : '—') + ' (' + (it ? it.score : '?') + ')');
+    });
+    lines.push('Оценивать сознание/подвижность, не чаще раза в час ранним периодом; помощник суждения, не замена врачу.');
+    lines.push('Шкалы боли · https://shray77.github.io/vetpain-site/');
+    return lines.join('\n');
+  }
+
+  /* ---- сборка кошачьего опросника ----------------------------------------- */
+  var catAnswers = {};     /* key → rank | null */
+
+  (function buildCat() {
+    var host = $('catUnits');
+    var html = '';
+    P.FGS.units.forEach(function (u) {
+      html += '<fieldset class="ps-cat" id="fs-' + u.key + '">';
+      html += '<legend>' + esc(u.title) + '</legend>';
+      html += '<div class="ps-opts" role="radiogroup" aria-label="' + esc(u.title) + '">';
+      u.items.forEach(function (it) {
+        var id = 'f-' + u.key + '-' + it.score;
+        html += '<label class="opt" for="' + id + '"><input type="radio" id="' + id + '" name="' + u.key + '" value="' + it.score + '"><span>' + esc(it.text) + '</span><span class="b">' + it.score + '</span></label>';
+      });
+      var nid = 'f-' + u.key + '-na';
+      html += '<label class="opt na" for="' + nid + '"><input type="radio" id="' + nid + '" name="' + u.key + '" value="na"><span>' + esc(P.FGS.notScorable) + '</span><span class="b">—</span></label>';
+      html += '</div></fieldset>';
+    });
+    host.innerHTML = html;
+
+    P.FGS.units.forEach(function (u) { catAnswers[u.key] = undefined; });
+
+    host.addEventListener('change', function (e) {
+      var name = e.target && e.target.name;
+      if (!name) return;
+      catAnswers[name] = (e.target.value === 'na') ? null : parseInt(e.target.value, 10);
+      recomputeCat();
+    });
+  })();
+
+  function recomputeCat() {
+    var out = $('catRes');
+    var r = P.fgsScore(catAnswers);
+    if (!r.ok) {
+      out.innerHTML = '<p class="verdict"><span class="pill pill-idle">опрос не заполнен</span></p>'
+        + '<p class="ps-ask">Отметьте состояние в юнитах: ' + r.missing.join(', ') + ' («оценить нельзя» — тоже отметка).</p>';
+      return;
+    }
+    if (r.verdict.code === 'unknown') {
+      out.innerHTML = '<p class="verdict"><span class="pill pill-idle">' + esc(r.verdict.label) + '</span></p>'
+        + '<p class="ps-ask">Все юниты помечены «оценить нельзя» — балл не определён.</p>';
+      return;
+    }
+    var iv = r.verdict.code === 'intervene';
+    var h = '';
+    var headline = (r.total !== null)
+      ? r.total + '/10'
+      : r.sum + ' из ' + (2 * r.scored) + ' в ' + r.scored + ' юнитах';
+    h += '<p class="verdict"><span>' + headline + '</span>'
+       + '<span class="pill ' + (iv ? 'pill-warn' : 'pill-ok') + '">' + esc(r.verdict.label) + '</span>'
+       + '<span class="ps-hint">порог: ≥4/10 · ратио ≥0.4</span></p>';
+    var pct = Math.round(100 * r.ratio);
+    h += '<div class="ps-meter"><i style="width:' + pct + '%"></i><b style="left:40%"></b></div>';
+    h += '<div class="ps-stats">'
+       + '<span>сумма <b>' + r.sum + '</b> · оценённых юнитов <b>' + r.scored + '/5</b></span>'
+       + '<span>ратио <b>' + r.ratio.toFixed(3) + '</b> / 1.0</span>'
+       + '</div>';
+    if (iv) {
+      h += '<ul class="ps-do"><li><b>спасительная анальгезия показана</b> — порог ≥4/10 (ратио ≥0.4) достигнут;</li>'
+         + '<li>после анальгезии пересмотреть через 1–2 часа (по протоколу клиники);</li></ul>';
+    } else {
+      h += '<ul class="ps-do"><li>балл ниже порога — анальгезия по баллу не показана;</li>'
+         + '<li>повторная оценка при изменении состояния; мониторинг по протоколу клиники;</li></ul>';
+    }
+    h += '<p class="ps-warn">Страх и седация искажают мимику — оценивайте спокойную кошку до манипуляций; «оценить нельзя» честнее угадывания. Решение — за врачом.</p>';
+    h += '<div class="ps-actions">'
+       + '<button class="ds-btn ds-btn--primary" id="catCopy" type="button">копировать отчёт</button>'
+       + '<button class="ds-btn" id="catPrint" type="button">печать бланка</button>'
+       + '<button class="ds-btn" id="catReset" type="button">сброс</button>'
+       + '</div>';
+    out.innerHTML = h;
+    $('catCopy').addEventListener('click', function () { copyReport(reportCat(r), 'отчёт скопирован'); });
+    $('catPrint').addEventListener('click', function () { window.print(); });
+    $('catReset').addEventListener('click', function () {
+      P.FGS.units.forEach(function (u) { catAnswers[u.key] = undefined; });
+      document.querySelectorAll('#catUnits input:checked').forEach(function (i) { i.checked = false; });
+      recomputeCat();
+    });
+  }
+
+  function reportCat(r) {
+    var lines = [];
+    var head = (r.total !== null)
+      ? 'FGS (кошки) — балл ' + r.total + '/10'
+      : 'FGS (кошки) — сумма ' + r.sum + ' в ' + r.scored + ' юнитах, ратио ' + r.ratio.toFixed(3) + '/1.0';
+    lines.push(head + ' · порог ≥4/10 (ратио ≥0.4)');
+    lines.push('Вердикт: ' + r.verdict.label.toUpperCase()
+      + (r.verdict.code === 'intervene' ? ' — спасительная анальгезия показана' : ' — анальгезия по баллу не показана'));
+    P.FGS.units.forEach(function (u) {
+      var v = catAnswers[u.key];
+      var txt = (v === null) ? P.FGS.notScorable
+        : (v === undefined ? null : u.items[Math.max(0, Math.min(2, v))].text);
+      lines.push('  ' + u.title + ': ' + (txt || '—'));
+    });
+    lines.push('Оценивать спокойную кошку до манипуляций; седация/страх искажают мимику.');
+    lines.push('Шкалы боли · https://shray77.github.io/vetpain-site/');
+    return lines.join('\n');
+  }
+
+  /* ---- общее --------------------------------------------------------------- */
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function copyReport(txt, msg) {
+    var done = function () { toast(msg); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function () { fallbackCopy(txt, done); });
+    } else { fallbackCopy(txt, done); }
+  }
+  function fallbackCopy(txt, done) {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    /* QA Task 223 (З2): execCommand('copy') отказывает тихо — не обещать успех */
+    try {
+      if (document.execCommand('copy')) done();
+      else toast('копирование не удалось — выделите отчёт и скопируйте вручную');
+    } catch (e) {
+      toast('копирование не удалось — выделите отчёт и скопируйте вручную');
+    }
+    document.body.removeChild(ta);
+  }
+  function toast(msg) {
+    var t = document.createElement('div');
+    t.className = 'ds-toast show';
+    t.setAttribute('role', 'status');
+    t.style.cssText = 'position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:99;';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 3000);
+  }
+
+  /* ---- старт: табы из deep-link -------------------------------------------- */
+  var wantCat = false;
+  try {
+    var u = new URL(location.href);
+    wantCat = (u.searchParams.get('scale') === 'cat' || u.hash === '#cat');
+  } catch (e) {}
+  showTab(wantCat ? 'cat' : 'dog');
+  recomputeDog();
+  recomputeCat();
+})();
+</script>
+</body>
+</html>

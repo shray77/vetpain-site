@@ -1,0 +1,22 @@
+name: painscales-gate
+
+# Гейт витрины: арифметика шкал боли обязана держать известные ответы
+# и не дрейфовать от референса порогов. Наследие Task 174 («гейты не
+# вызывались ни одним CI») — здесь гейт в CI с первого дня.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  known-answers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Известные ответы + verify порогов + CJK-детектор
+        run: node --test tests/painscales.test.mjs
